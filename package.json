@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "fashionplatform",
   "version": "1.0.0",
   "description": "fashion soical media platform",
@@ -7,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack",
-    "dev": "webpack-dev-server --open --config webpack.config.js --hot"
+    "dev": "webpack-dev-server --open --config webpack.config.js --hot",
+    "start": "nodemon ./server/server.js"
   },
   "repository": {
     "type": "git",
@@ -36,36 +36,15 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.10",
+    "nodemon": "^1.18.7"
   },
   "dependencies": {
     "react": "^16.6.3",
     "react-collapsible": "^2.3.2",
     "react-dom": "^16.6.3",
     "react-redux": "^5.1.1",
-    "react-router-dom": "^4.3.1"
-=======
-  "name": "scratchproject",
-  "version": "1.0.0",
-  "description": "Fashion Social Networking Program",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon ./server/server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vwang4536/scratchProject.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vwang4536/scratchProject/issues"
-  },
-  "homepage": "https://github.com/vwang4536/scratchProject#readme",
-  "devDependencies": {
-    "nodemon": "^1.18.7"
-  },
-  "dependencies": {
+    "react-router-dom": "^4.3.1",
     "api-key-auth": "^0.2.1",
     "body-parser": "^1.18.3",
     "cloudinary": "^1.13.2",
@@ -77,6 +56,5 @@
     "pg": "^7.7.1",
     "pg-promise": "^8.5.3",
     "simple-geoip": "^0.1.1"
->>>>>>> master
   }
 }
