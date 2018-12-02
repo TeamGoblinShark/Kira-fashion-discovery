@@ -9,7 +9,7 @@ const app = express();
 require('dotenv').config();
 const GeoIP = require('simple-geoip');
 
-const geoip = new GeoIP(process.env.geoipkey)
+const geoip = new GeoIP(process.env.geoipkey);
 
 // localhost:3000
 const PORT = 3000;
@@ -32,7 +32,7 @@ function getIpAddress(req, res, next)  {
 // done based on requests but have not done yet; set to Los Angeles
   const ipaddress = '74.87.214.86';
   // Throw an error if there is an issue with the ipaddress
-  if (!ipaddress) {return res.send('Cannot get ipaddress')};
+  if (!ipaddress) { return res.send('Cannot get ipaddress') }
   // Savve the ipaddress into res.locals
   res.locals.ipaddress = ipaddress;
   next();
@@ -79,18 +79,30 @@ function grabCityId (req, res, next) {
 }
 
 function updateCityId (req, res, next) {
-
   db.any('UPDATE users SET city = $1 WHERE id = $2', [res.locals.cityid, res.locals.userid])
     .then((data) => {
-      console.log('Success');
-      res.json(data)
-      
+      console.log('Successfully updated city ID');
+      res.json(data);
     })
     .catch((err) => {
       console.error('Error updating city for user');
       return res.sendStatus(500)
     })
 }
+function grabPics (req, res, next) {
+  console.log(res.locals.cityid)
+  db.any('SELECT picture FROM pictures WHERE city = $1', [res.locals.cityid])
+    .then((data) => {
+      return res.json(data)
+    })
+    .catch((error) => {
+      console.log(error);
+      res.send('ERROR! cannot grab links from database')
+    })
+}
+
+app.get('/pictures', grabCityId, grabPics);
+
 app.post('/login', grabUserId, grabCityId, updateCityId);
 
 // testing connection to database 
