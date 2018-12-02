@@ -39,7 +39,9 @@
   },
   "dependencies": {
     "react": "^16.6.3",
+    "react-collapsible": "^2.3.2",
     "react-dom": "^16.6.3",
-    "react-redux": "^5.1.1"
+    "react-redux": "^5.1.1",
+    "react-router-dom": "^4.3.1"
   }
 }

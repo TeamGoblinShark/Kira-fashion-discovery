@@ -1,5 +1,115 @@
 body {
     margin:0;
     padding:0;
-    background-color: red;
 }
+
+p {
+    margin:0;
+    padding:0;
+}
+
+.header {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin:0;
+    padding: 0;
+    width: 100%;
+    height:150px;
+    background-color: rgb(243, 192, 188);
+    color:blue;
+}
+
+.photo-loader {
+
+    border : 3px solid rgb(247, 217, 216);
+    border-radius: 5px;
+    margin-top: auto;
+    display:flex;
+    background-color: rgb(243, 192, 188);
+    width: 50px;
+    height:50px;
+    margin:0;
+    padding: 0;
+    transition: border 0.5s;
+}
+
+.photo-loader:hover {
+
+    border : 3px solid rgb(250, 242, 242);
+
+}
+
+/* HO,E PAGE DROP DOWN */
+
+.dropdown {
+    border : 3px solid rgb(184, 74, 70);
+    border-radius: 5px;
+    margin-top: auto;
+    display:flex;
+    background-color: rgb(226, 75, 65);
+    width: 8000px;
+    height:200px;
+    margin:0;
+    padding: 0;
+    transition: border 0.5s;
+    text-align: center;
+}
+.hamburger-click{
+    border-top: 2px solid rgb(238, 166, 160);
+    background-color: rgb(243, 192, 188);
+    height:20px;
+
+}
+.filters-container {
+    padding:10px;
+    display:flex;
+    justify-content: space-around;
+    background-color: rgb(243, 192, 188);
+}
+
+.filter-item {
+    color: white;
+    font-family:"Arial", sans-serif;
+}
+
+.div-shadow {
+    z-index:-1;
+    box-shadow: 0px 4px 3px 3px rgb(243, 243, 243);
+}
+/* FORMS */
+.form-login {
+    margin-top:100px;
+    border : 3px solid rgb(184, 74, 70);
+    border-radius: 5px;
+    display:flex;
+    background-color: rgb(212, 92, 83);
+    width: 150px;
+    height:200px;
+    padding: 50px;
+    transition: border 0.5s;
+    text-align: center;
+}
+
+.form-inner {
+    display:flex;
+    justify-content: center;
+}
+
+.login-container {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+/* .user-pass {
+    display:flex-wrap;
+    border: solid white;
+} */
