@@ -1,25 +1,50 @@
 {
-  "name": "scratchproject",
+  "name": "fashionplatform",
   "version": "1.0.0",
-  "description": "Fashion Social Networking Program",
+  "description": "fashion soical media platform",
   "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack",
+    "dev": "webpack-dev-server --open --config webpack.config.js --hot",
     "start": "nodemon ./server/server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vwang4536/scratchProject.git"
+    "url": "git+https://github.com/Code4Zelda/scratchProject.git"
   },
-  "author": "",
+  "author": "Donte, Ken, Victor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vwang4536/scratchProject/issues"
+    "url": "https://github.com/Code4Zelda/scratchProject/issues"
   },
-  "homepage": "https://github.com/vwang4536/scratchProject#readme",
+  "homepage": "https://github.com/Code4Zelda/scratchProject#readme",
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
   "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^1.0.1",
+    "file-loader": "^2.0.0",
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10",
     "nodemon": "^1.18.7"
   },
   "dependencies": {
+    "react": "^16.6.3",
+    "react-collapsible": "^2.3.2",
+    "react-dom": "^16.6.3",
+    "react-redux": "^5.1.1",
+    "react-router-dom": "^4.3.1",
     "api-key-auth": "^0.2.1",
     "body-parser": "^1.18.3",
     "cloudinary": "^1.13.2",
