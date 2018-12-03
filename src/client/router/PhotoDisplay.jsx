@@ -5,10 +5,22 @@ class PhotoDisplay extends React.Component {
     constructor(props) {
         super(props)
     }
+    componentDidMount(){
+        console.log('hihihi did mount');
+        this.props.getTopPictureUrls();
+       
+    }
+ 
 
     render() {
         return (
-            <div></div>
+            <div>
+                <div className="display-outer-container">
+                    <div className="display-container">
+                    {this.props.parentState.displayPicArr}
+                    </div>
+                </div>
+            </div>
         )
     }
 }
