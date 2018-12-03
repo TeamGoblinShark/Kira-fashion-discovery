@@ -2,7 +2,7 @@
 const db = require('./db.js');
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors')
 const app = express();
 
 // requirements for using geoip library
@@ -13,19 +13,20 @@ const geoip = new GeoIP(process.env.geoipkey);
 
 // localhost:3000
 const PORT = 3000;
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(express.static(__dirname + '/../../dist'));
 
-// automatically call getIpAddress and grabLocation
-app.use(getIpAddress, grabLocation)
 
-// check if server is online and connected
-app.listen(PORT, (err) => {
-  if (err) console.log(err);
-  else console.log(`Server listening on Port: ${PORT}...`);
-});
+
+
+// automatically call getIpAddress and grabLocation
+app.use(getIpAddress, grabLocation, grabCityId)
+
+
+
+
 
 function getIpAddress(req, res, next)  {
 // Middleware that grabs IP address of the client; should be able to be
@@ -59,6 +60,8 @@ function grabUserId (req, res, next) {
   db.any('SELECT id FROM users WHERE (username = $1 AND password = $2)', [req.body.username, req.body.password])
     .then((data) => {
       res.locals.userid = data[0].id;
+ 
+
       next();
     })
     .catch((err) => {
@@ -82,7 +85,7 @@ function updateCityId (req, res, next) {
   db.any('UPDATE users SET city = $1 WHERE id = $2', [res.locals.cityid, res.locals.userid])
     .then((data) => {
       console.log('Successfully updated city ID');
-      res.json(data);
+      next();
     })
     .catch((err) => {
       console.error('Error updating city for user');
@@ -91,9 +94,23 @@ function updateCityId (req, res, next) {
 }
 function grabPics (req, res, next) {
   console.log(res.locals.cityid)
-  db.any('SELECT picture FROM pictures WHERE city = $1', [res.locals.cityid])
+  db.any('SELECT id, picture_url, userid, likes, description, style_nightlife, style_outdoor FROM pictures WHERE city = $1', [res.locals.cityid])
     .then((data) => {
-      return res.json(data)
+      let returnData = {};
+      returnData = data.reduce((accum, el) => {
+        let id = el.id;
+        accum[id] = {
+          'picture_url': el.picture_url,
+          'userid' : el.userid,
+          'likes' : el.likes,
+          'description' : el.description,
+          'style_nightlife' : el.style_nightlife,
+          'style_outdoor' : el.style_outdoor,
+        };
+        return accum;
+
+      }, returnData)
+      return res.json(returnData)
     })
     .catch((error) => {
       console.log(error);
@@ -101,16 +118,33 @@ function grabPics (req, res, next) {
     })
 }
 
-app.get('/pictures', grabCityId, grabPics);
+app.get('/pictures', grabPics);
 
-app.post('/login', grabUserId, grabCityId, updateCityId);
+app.post('/login', grabUserId, updateCityId, (req, res) =>{
+  return res.json(res.locals.userid);
+});
+
+app.post('/uploadPicture', (req, res) =>{
+  let { userUuid, uploadedFileCloudinaryUrl, uploadText, uploadStyleClickNightOut, uploadStyleClickOutDoor} = req.body;
+
+  
+  db.any('INSERT INTO pictures(id, userid, city, latitude, longitude, likes, description, date, picture_url, style_nightlife, style_outdoor) VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10);'
+  ,[userUuid, res.locals.cityid, res.locals.latitude, res.locals.longitude, 0, uploadText, null, uploadedFileCloudinaryUrl, uploadStyleClickNightOut, uploadStyleClickOutDoor ])
+    .then((data) => {
+      console.log('Success storing picture info');
+      return res.json(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.send('ERROR! Could not save picture to database');
+    });
+})
+
 
 // testing connection to database 
 app.post('/city', (req, res, next) => {
   db.any('INSERT INTO city(id, name, state) VALUES (uuid_generate_v4(), $1, $2);', [res.locals.city, res.locals.state])
     .then((data) => {
-      // success;
-      console.log('Success.');
       res.json(data);
       next();
     })
@@ -119,4 +153,11 @@ app.post('/city', (req, res, next) => {
       console.log(error);
       res.send('ERROR! Could not send to database');
     });
+});
+
+
+// check if server is online and connected
+app.listen(PORT, (err) => {
+  if (err) console.log(err);
+  else console.log(`Server listening on Port: ${PORT}...`);
 });
