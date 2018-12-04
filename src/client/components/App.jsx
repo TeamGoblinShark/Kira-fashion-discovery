@@ -13,6 +13,8 @@ class App extends React.Component {
   constructor(props) {
     super(props)
       this.state = {
+        showModal: false,
+        modalImgInfo: {},
         username: "",
         userUuid: "",
         password: "",
@@ -38,10 +40,27 @@ class App extends React.Component {
       this.uploadOnclickStyleOutDoor = this.uploadOnclickStyleOutDoor.bind(this);
       this.handleUrlAndTextSubmit = this.handleUrlAndTextSubmit.bind(this);
       this.getTopPictureUrls = this.getTopPictureUrls.bind(this);
+      this.handleShowModal = this.handleShowModal.bind(this);
+      this.ExitModal = this.ExitModal.bind(this);
+
 
 
 
     }
+    ExitModal(){
+        this.setState({
+            showModal: false,
+        });
+    }
+    handleShowModal(event) {
+        let key = event.target.id;
+        console.log(this.state.topPictureList[key])
+        this.setState({
+            showModal: true,
+            modalImgInfo: this.state.topPictureList[key],
+        });
+    }
+
 
     onImageDrop(images) {
     // uploads is an array that would hold all the post methods for each image to be uploaded, then we'd use axios.all()
@@ -90,7 +109,7 @@ class App extends React.Component {
                 })
                 window.setTimeout(() => {
                     history.push('/home');
-                 }, 2000)
+                 }, 3400)
             })
             .catch( err => {
                 console.log(err)
@@ -174,7 +193,7 @@ class App extends React.Component {
                 for (let key in response.data) {
                 let img_url_crop = response.data[key].picture_url.replace('upload/', 'upload/w_500,h_500/');
                 console.log(img_url_crop);
-                arr.push(<div><img src={img_url_crop} className="imgDisplay"/></div>)
+                arr.push(<div><img id={key} onClick={this.handleShowModal} src={img_url_crop} className="imgDisplay"/></div>)
                 }
                 this.setState({
                     topPictureList: response.data,
@@ -189,7 +208,10 @@ class App extends React.Component {
     }
 
 
+    
+
     render() {
+
         return (
             // ROUTES
             <Router history={history}>
@@ -216,6 +238,7 @@ class App extends React.Component {
                             uploadOnclickStyleNightOut={this.uploadOnclickStyleNightOut}
                             handleUrlAndTextSubmit={this.handleUrlAndTextSubmit}
                             getTopPictureUrls={this.getTopPictureUrls}
+                            ExitModal={this.ExitModal}
                             />
                         }
                     />
