@@ -169,6 +169,7 @@ class App extends React.Component {
 
     handleUrlAndTextSubmit(){
         event.preventDefault();
+        //needs to change eventually probably
         axios.post("http://localhost:3000/uploadPicture", {
             userUuid: this.state.userUuid,
             uploadedFileCloudinaryUrl: this.state.uploadedFileCloudinaryUrl,
@@ -177,6 +178,7 @@ class App extends React.Component {
             uploadStyleClickOutDoor: this.state.uploadStyleClickOutDoor,
         })
             .then(response => {
+                console.log('response is working')
                 console.log(response);
             })
             .catch( err => {

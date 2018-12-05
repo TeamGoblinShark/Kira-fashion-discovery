@@ -103,7 +103,7 @@ class Home extends React.Component {
                             getTopPictureUrls={this.props.getTopPictureUrls}
                             />
                         } />
-                        <Route exact path="/home/upload" render={(props) =>
+                        <Route exact path="/home/upload" render={(...props) =>
                             <PhotoUpload {...props} 
                             parentState={this.props.parentState}
                             onImageDrop={this.props.onImageDrop}
