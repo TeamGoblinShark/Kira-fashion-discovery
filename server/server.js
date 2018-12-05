@@ -16,7 +16,7 @@ const PORT = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
-app.use(express.static(__dirname + '/../../dist'));
+app.use(express.static(__dirname + '/../dist'));
 
 
 
@@ -36,17 +36,17 @@ function getIpAddress(req, res, next)  {
   if (!ipaddress) { return res.send('Cannot get ipaddress') }
   // Savve the ipaddress into res.locals
   res.locals.ipaddress = ipaddress;
+  console.log('getting IP')
   next();
 }
 
 function grabLocation (req, res, next) {
-  geoip.lookup('74.87.214.86', (err, data) => {
+  console.log('grabbed location')
+  geoip.lookup(res.locals.ipaddress, (err, data) => {
     if (err) throw err;
     else {
       res.locals.state = data.location.region;
       res.locals.city = data.location.city;
-      res.locals.latitude = data.location.lat;
-      res.locals.longitude = data.location.lng;
       return next();
     }
   });
@@ -108,7 +108,6 @@ function grabPics (req, res, next) {
           'style_outdoor' : el.style_outdoor,
         };
         return accum;
-
       }, returnData)
       return res.json(returnData)
     })
@@ -118,6 +117,7 @@ function grabPics (req, res, next) {
     })
 }
 
+//gets pictures to post to page
 app.get('/pictures', grabPics);
 
 app.post('/login', grabUserId, updateCityId, (req, res) =>{
@@ -128,8 +128,8 @@ app.post('/uploadPicture', (req, res) =>{
   let { userUuid, uploadedFileCloudinaryUrl, uploadText, uploadStyleClickNightOut, uploadStyleClickOutDoor} = req.body;
 
   
-  db.any('INSERT INTO pictures(id, userid, city, latitude, longitude, likes, description, date, picture_url, style_nightlife, style_outdoor) VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10);'
-  ,[userUuid, res.locals.cityid, res.locals.latitude, res.locals.longitude, 0, uploadText, null, uploadedFileCloudinaryUrl, uploadStyleClickNightOut, uploadStyleClickOutDoor ])
+  db.any('INSERT INTO pictures(id, userid, city, likes, description, date, picture_url, style_nightlife, style_outdoor) VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10);'
+  ,[userUuid, res.locals.cityid, 0, uploadText, null, uploadedFileCloudinaryUrl, uploadStyleClickNightOut, uploadStyleClickOutDoor ])
     .then((data) => {
       console.log('Success storing picture info');
       return res.json(data);
