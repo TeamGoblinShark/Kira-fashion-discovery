@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image } from 'react-native';
+import { StyleSheet, Text, ScrollView, View, Image, Button } from 'react-native';
 
 import { Router, Route, Switch } from 'react-router-native';
 import axios from 'react-native-axios';
@@ -7,20 +7,22 @@ import axios from 'react-native-axios';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       topPictureList: {},
       displayPicArr: [],
+      photos: []
     }
     this.getTopPictureUrls = this.getTopPictureUrls.bind(this);    
+    this._handleButtonPress = this._handleButtonPress.bind(this);
   }
   getTopPictureUrls(){
-    axios.get("http://localhost:192.168.0.89/pictures")
+    axios.get("http://192.168.0.89:3000/pictures")
         .then(response => {
             let arr = [];
             for (let key in response.data) {
             let img_url_crop = response.data[key].picture_url.replace('upload/', 'upload/w_500,h_500/');
-            console.log(img_url_crop);
+
             arr.push(<View><Image id={key} onPress={this.handleShowModal} source={{uri: img_url_crop}} style={styles.imgDisplay}/></View>)
             }
             this.setState({
@@ -33,9 +35,22 @@ export default class App extends React.Component {
             console.log(err)
         })
   }
+  _handleButtonPress = () => {
+    CameraRoll.getPhotos({
+        first: 20,
+        assetType: 'Photos',
+      })
+      .then(r => {
+        this.setState({ photos: r.edges });
+      })
+      .catch((err) => {
+         //Error Loading Images
+      });
+    };
   
   componentDidMount() {
     this.getTopPictureUrls();
+    this._handleButtonPress();
   }
 
   render() {
@@ -50,7 +65,22 @@ export default class App extends React.Component {
       <ScrollView>
         <View style={styles.container}>
           <Text>FASHION NATIVE! YAY!!!</Text>
-          {this.state.displayPicArr}
+          {/* {this.state.displayPicArr} */}
+          <View>
+        <Button title="Load Images" onPress={this._handleButtonPress} />
+          {this.state.photos.map((p, i) => {
+          return (
+         <Image
+           key={i}
+           style={{
+             width: 300,
+             height: 100,
+           }}
+           source={{ uri: p.node.image.uri }}
+         />
+       );
+     })}
+        </View>
         </View>
       </ScrollView>
     );
