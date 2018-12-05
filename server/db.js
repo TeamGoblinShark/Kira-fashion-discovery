@@ -3,7 +3,7 @@ require('dotenv').config();
 const initOptions = {
   connect(client, dc, useCount) {
     const cp = client.connectionParameters;
-    console.log('Connected to database' + cp.database)
+    console.log('Connected to database ' + cp.database)
   },
   disconnect(client, dc) {
     const cp = client.connectionParameters;
