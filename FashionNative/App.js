@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image, Button } from 'react-native';
+import { StyleSheet, Text, ScrollView, View, Image, Button, CameraRoll } from 'react-native';
 
-import { Router, Route, Switch } from 'react-router-native';
+import { NativeRouter, Router, Route, Switch, Link } from 'react-router-native';
 import axios from 'react-native-axios';
 
 export default class App extends React.Component {
@@ -16,41 +16,39 @@ export default class App extends React.Component {
     this.getTopPictureUrls = this.getTopPictureUrls.bind(this);    
     this._handleButtonPress = this._handleButtonPress.bind(this);
   }
-  getTopPictureUrls(){
+  getTopPictureUrls() {
     axios.get("http://192.168.0.89:3000/pictures")
-        .then(response => {
-            let arr = [];
-            for (let key in response.data) {
-            let img_url_crop = response.data[key].picture_url.replace('upload/', 'upload/w_500,h_500/');
+      .then(response => {
+        let arr = [];
+        for (let key in response.data) {
+        let img_url_crop = response.data[key].picture_url.replace('upload/', 'upload/w_500,h_500/');
 
-            arr.push(<View><Image id={key} onPress={this.handleShowModal} source={{uri: img_url_crop}} style={styles.imgDisplay}/></View>)
-            }
-            this.setState({
-                topPictureList: response.data,
-                displayPicArr: arr,
-            })
-            
-        })
-        .catch( err => {
-            console.log(err)
-        })
+        arr.push(<View><Image id={key} onPress={this.handleShowModal} source={{uri: img_url_crop}} style={styles.imgDisplay}/></View>)
+        }
+        this.setState({
+          topPictureList: response.data,
+          displayPicArr: arr,
+        })  
+      })
+      .catch( err => {
+          console.log(err)
+      })
   }
   _handleButtonPress = () => {
     CameraRoll.getPhotos({
-        first: 20,
-        assetType: 'Photos',
-      })
-      .then(r => {
-        this.setState({ photos: r.edges });
-      })
-      .catch((err) => {
-         //Error Loading Images
-      });
-    };
+      first: 20,
+      assetType: 'Photos',
+    })
+    .then(r => {
+      this.setState({ photos: r.edges });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
   
   componentDidMount() {
     this.getTopPictureUrls();
-    this._handleButtonPress();
   }
 
   render() {
@@ -62,27 +60,25 @@ export default class App extends React.Component {
     // })
 
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          <Text>FASHION NATIVE! YAY!!!</Text>
-          {/* {this.state.displayPicArr} */}
-          <View>
-        <Button title="Load Images" onPress={this._handleButtonPress} />
-          {this.state.photos.map((p, i) => {
-          return (
-         <Image
-           key={i}
-           style={{
-             width: 300,
-             height: 100,
-           }}
-           source={{ uri: p.node.image.uri }}
-         />
-       );
-     })}
-        </View>
-        </View>
-      </ScrollView>
+        <ScrollView>
+          <View style={styles.container}>
+            <Text>FASHION NATIVE! YAY!!!</Text>
+            {/* {this.state.displayPicArr} */}
+            <Button title="Load Images" onPress={this._handleButtonPress} />
+            {this.state.photos.map((p, i) => {
+              return (
+                <Image
+                  key={i}
+                  style={{
+                    width: 100,
+                    height: 100,
+                  }}
+                  source={{ uri: p.node.image.uri }}
+                />
+                );
+              })}
+          </View>
+        </ScrollView>
     );
   }
 }
@@ -93,6 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 50
   },
   imgDisplay: {
     borderWidth: 1.5,

@@ -9,7 +9,7 @@ const app = express();
 require('dotenv').config();
 const GeoIP = require('simple-geoip');
 
-const geoip = new GeoIP(process.env.geoipkey);
+const geoip = new GeoIP("at_UdwCaNs9DDE1gsHk9hDO0MJITCK0p");
 
 // localhost:3000
 const PORT = 3000;
