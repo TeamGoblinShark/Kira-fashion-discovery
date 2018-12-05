@@ -156,6 +156,9 @@ app.post('/city', (req, res, next) => {
 });
 
 
+
+
+
 // check if server is online and connected
 app.listen(PORT, (err) => {
   if (err) console.log(err);
