@@ -124,27 +124,27 @@ app.post('/login', grabUserId, updateCityId, (req, res) =>{
   return res.json(res.locals.userid);
 });
 
-// app.post('/uploadPicture', (req, res) =>{
+app.post('/uploadPicture', (req, res) =>{
 
-//   let { userUuid, uploadedFileCloudinaryUrl, uploadText, uploadStyleClickNightOut, uploadStyleClickOutDoor} = req.body;
+  let { userUuid, uploadedFileCloudinaryUrl, uploadText, uploadStyleClickNightOut, uploadStyleClickOutDoor} = req.body;
 
   
-//   db.any('INSERT INTO pictures(id, userid, city, latitude, longitude, likes, description, date, picture_url, style_nightlife, style_outdoor) VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10);'
-//   ,[userUuid, res.locals.cityid, res.locals.latitude, res.locals.longitude, 0, uploadText, null, uploadedFileCloudinaryUrl, uploadStyleClickNightOut, uploadStyleClickOutDoor ])
-//     .then((data) => {
-//       console.log(data);
-//       console.log('Success storing picture info');
-//       db.any('INSERT INTO tags VALUES ( uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [...req.body.tags])
-//       .then((data) => {
-//         db.any('UPDATE pictures set tagid = $1 where pictureid = $2', [data, userUuid] )
-//       })
-//       return res.json(data);
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//       return res.send('ERROR! Could not save picture to database');
-//     });
-// })
+  db.any('INSERT INTO pictures(id, userid, city, latitude, longitude, likes, description, date, picture_url, style_nightlife, style_outdoor) VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10);'
+  ,[userUuid, res.locals.cityid, res.locals.latitude, res.locals.longitude, 0, uploadText, null, uploadedFileCloudinaryUrl, uploadStyleClickNightOut, uploadStyleClickOutDoor ])
+    .then((data) => {
+      console.log(data);
+      console.log('Success storing picture info');
+      db.any('INSERT INTO tags VALUES ( uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [...req.body.tags])
+      .then((data) => {
+        db.any('UPDATE pictures set tagid = $1 where pictureid = $2', [data, userUuid] )
+      })
+      return res.json(data);
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.send('ERROR! Could not save picture to database');
+    });
+})
 
 
 // testing connection to database 
