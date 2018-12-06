@@ -1,16 +1,36 @@
-import React from 'react';
-import { StyleSheet, Text, ScrollView, View, Image, Button, TouchableHighlight } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, ScrollView, View, Image, Button, TouchableHighlight,  NavigatorIOS } from 'react-native';
 
 import { NativeRouter, Router, Route, Switch, Link } from 'react-router-native';
-
+import PicDetail from './PicDetail'
 import axios from 'react-native-axios';
 
-export default class App extends React.Component {
+export default class NavigatorIOSApp extends Component {
+    render() {
+        return (
+          <NavigatorIOS
+            initialRoute={{
+              component: App,
+              title: 'Main',
+            }}
+            style={{flex: 1}}
+          />
+        );
+      }
+}
+
+const Pic = () => (
+  <View style={styles.container}>
+    <View style={{backgroundColor: 'white'}} />
+      <Text style={{ fontSize: 36 }}>1 bag of popcorn; stale</Text>
+    </View>
+)
+
+class App extends React.Component {
   constructor(props) {
     super(props);
-
-
   }
+
 
 
   // getAllPictures = () => {
@@ -57,17 +77,30 @@ export default class App extends React.Component {
       'https://static.spin.com/files/2017/03/13339581_1067391013307733_3016733990114982507_n-1490022683-640x640.jpg', 
     ];
 
-    const pics = picArray.map((pic, index) => {
-      return <Image uniqueID={index} source={{uri: pic}} style={styles.imgDisplay}/>
-      
+    const navigateToDetail = ({ uri, id }) => this.props.navigator.push({
+      component: PicDetail,
+      title: 'Congratulations you won the prize!',
+      passProps: { uri, id },
     })
+    
+    const picToComponent = (pic, id) => (
+      <TouchableHighlight onPress={() => navigateToDetail({ uri: pic, id })}>
+        <Image uniqueID={id} source={{uri: pic}} style={styles.imgDisplay} />
+      </TouchableHighlight>
+    )
 
+    const pics = picArray.map(picToComponent)
+      const picRoute = {
+        component: Pic,
+        title: 'Pictures',
+      }
     return (
       <View style={styles.container}>
         <View>
           <View style={{backgroundColor: 'white'}} />
           <Text style={{ fontSize: 36 }}>FASHION NATIVE</Text>
         </View>
+        <Button title="Press for a pic" onPress={() => this.props.navigator.push(picRoute)} />
         <ScrollView style={{width: 400}}>
           {pics}
         </ScrollView>
@@ -96,4 +129,3 @@ const styles = StyleSheet.create({
     height: 150
   }
 })
-
