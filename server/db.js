@@ -7,13 +7,13 @@ const initOptions = {
   },
   disconnect(client, dc) {
     const cp = client.connectionParameters;
-    console.log('Disconnected from database' + cp.database)
+    // console.log('Disconnected from database' + cp.database)
   },
   query(e) {
     console.log('QUERY:' + e.query)
   },
   receive(data, result, e) {
-    console.log('DATA' + data)
+    // console.log('DATA' + data)
   }
 }
 const pgp = require('pg-promise')(initOptions);
