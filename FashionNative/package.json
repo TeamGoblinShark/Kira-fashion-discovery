@@ -9,10 +9,16 @@
   "dependencies": {
     "cloudinary": "^1.13.2",
     "expo": "^31.0.2",
+    "file-url": "^2.0.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-axios": "^0.17.1",
-    "react-router-native": "^4.3.0"
+    "react-native-fetch-blob": "^0.10.8",
+    "react-native-fs": "^2.12.1",
+    "react-native-heic-converter": "^1.2.0",
+    "react-native-image-picker": "^0.27.1",
+    "react-router-native": "^4.3.0",
+    "rn-fetch-blob": "^0.10.13"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
