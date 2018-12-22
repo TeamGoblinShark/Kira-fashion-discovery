@@ -5,9 +5,8 @@ import Home from './../router/Home.jsx'
 import history from './../router/history.jsx'
 import PhotoUpload from './../router/PhotoUpload.jsx'
 import axios from 'axios'
+const CLOUDINARY_UPLOAD_PRESET = 'gntgkm6s';
 
-const CLOUDINARY_UPLOAD_PRESET = 'p2qbhuwl';
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dwbr9kbj2/image/upload';
 
 class App extends React.Component {
   constructor(props) {
@@ -69,12 +68,12 @@ class App extends React.Component {
       const formData = new FormData();
       formData.append("file", image);
       formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
-      formData.append("api_key", 484393632848713); // Replace API key with your own Cloudinary API key
+      formData.append("api_key", 693143847159238); // Replace API key with your own Cloudinary API key
       formData.append("timestamp", (Date.now() / 1000) | 0);
 
       // Replace cloudinary upload URL with yours
       return axios.post(
-        "https://api.cloudinary.com/v1_1/dwbr9kbj2/image/upload",
+        "https://api.cloudinary.com/v1_1/dlfe1l6id/image/upload",
         formData, 
         { headers: { "X-Requested-With": "XMLHttpRequest" }})
         .then(response => {
@@ -170,6 +169,7 @@ class App extends React.Component {
 
     handleUrlAndTextSubmit(){
         event.preventDefault();
+        //needs to change eventually probably
         axios.post("http://localhost:3000/uploadPicture", {
             userUuid: this.state.userUuid,
             uploadedFileCloudinaryUrl: this.state.uploadedFileCloudinaryUrl,
@@ -178,6 +178,7 @@ class App extends React.Component {
             uploadStyleClickOutDoor: this.state.uploadStyleClickOutDoor,
         })
             .then(response => {
+                console.log('response is working')
                 console.log(response);
             })
             .catch( err => {
